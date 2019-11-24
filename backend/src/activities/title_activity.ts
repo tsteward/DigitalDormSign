@@ -1,5 +1,5 @@
 import {Namespace, Socket} from "socket.io";
-import Title from '../models/title';
+import Title, {ITitle} from '../models/title';
 import {ConstrainableSelector} from "../constraints/constrainable_selector";
 
 export class TitleActivity {
@@ -27,10 +27,10 @@ export class TitleActivity {
 	private updateTitle(client: Socket) {
 		// Return the first title
 		Title.find((err, res) => {
-			const newTitle = this.selector.pick(res);
+			const newTitle = this.selector.pick(res) as ITitle;
 
 			if (newTitle) {
-				client.emit('update', newTitle);
+				client.emit('update', newTitle.toApiModel());
 			}
 		});
 	}
