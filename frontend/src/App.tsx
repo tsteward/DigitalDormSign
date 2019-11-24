@@ -1,15 +1,19 @@
-import React from 'react';
-import './App.css';
-import {Title} from "./title/Title";
+import React, {Component} from 'react';
+import {Title} from "./title/title";
+import './app.scss';
 
-const App: React.FC = () => {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<Title/>
-			</header>
-		</div>
-	);
-};
+export class App extends Component {
+	render() {
+		return (
+			<div className="app">
+				<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
 
-export default App;
+				<div className="title">
+					<Title/>
+				</div>
+				<div className="activity">
+				</div>
+			</div>
+		);
+	}
+}

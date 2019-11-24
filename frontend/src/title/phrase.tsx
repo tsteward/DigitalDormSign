@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import io from "socket.io-client";
 import {IPhrase} from '../../../backend/src/models/phrase';
+import './phrase.scss';
 
 interface PhraseProps {
 

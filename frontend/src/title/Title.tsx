@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import io from 'socket.io-client';
 import {ITitle} from '../../../backend/src/models/title';
 import {Phrase} from "./phrase";
+import './title.scss';
 
 interface TitleProps {
 
