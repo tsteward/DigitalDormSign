@@ -1,6 +1,6 @@
 import {SchemaType} from "mongoose";
 import * as mongoose from "mongoose";
-import {TimeConstraint} from "./time_constraint";
+import {AfterHourRule, BeforeHourRule, TimeConstraint, TimeConstraintRuleType} from "./time_constraint";
 
 export enum ConstraintType {
 	Time
@@ -40,7 +40,15 @@ class ConstraintSchemaType extends SchemaType {
 		// Add for each new constraint type
 		switch (value.type) {
 			case ConstraintType.Time:
-				return new TimeConstraint();
+				const rules = (value.rules) ? value.rules.map((valueRule: any) => {
+					switch (valueRule.type) {
+						case TimeConstraintRuleType.AfterHour:
+							return new AfterHourRule(valueRule.hour, valueRule.inclusive);
+						case TimeConstraintRuleType.BeforeHour:
+							return new BeforeHourRule(valueRule.hour, valueRule.inclusive);
+					}
+				}) : [];
+				return new TimeConstraint(rules);
 			default:
 				return null;
 		}
