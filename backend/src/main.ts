@@ -1,14 +1,14 @@
 import io, {Socket} from 'socket.io';
+import mongoose from 'mongoose';
 
 const socket = io();
 
+mongoose.connect('mongodb://localhost:27017/digitaldormsign', {useNewUrlParser: true}, () => {
+	console.log("Connected to Mongoose Database");
+});
+
 socket.on('connection', (con: Socket) => {
 	console.log("New Connection");
-
-	con.on('echo', (echoText) => {
-		console.log("received test");
-		con.emit('echo', echoText);
-	});
 });
 
 console.log("Starting Socket Connection");
