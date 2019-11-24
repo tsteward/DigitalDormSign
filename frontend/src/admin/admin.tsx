@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './admin-component.scss';
+import './admin.scss';
 
 export class Admin extends Component {
 	render() {

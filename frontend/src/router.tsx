@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {Route, Switch} from 'react-router'
-import {App} from "./app";
 import {BrowserRouter, HashRouter} from "react-router-dom";
-import {Admin} from "./admin/admin-component";
+import {Admin} from "./admin/admin";
+import {App} from "./app/app";
 
 export class Router extends Component {
 	render() {
