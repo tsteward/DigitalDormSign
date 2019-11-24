@@ -1,13 +1,13 @@
 import * as mongoose from "mongoose";
 import {Schema, Document} from "mongoose";
 import {Constraint, IConstrainable, IConstraint} from "../constraints/constraint";
-import {Phrase} from "../api/models/phrase";
+import {PhraseModel} from "../api/models/phrase-model";
 
 export interface IPhrase extends Document, IConstrainable {
 	text: string;
 	constraint: IConstraint;
 
-	toApiModel(): Phrase
+	toApiModel(): PhraseModel
 }
 
 export class PhraseSchema extends Schema {
@@ -20,7 +20,7 @@ export class PhraseSchema extends Schema {
 		this.methods.toApiModel = this.toApiModel;
 	}
 
-	toApiModel(this: IPhrase): Phrase {
+	toApiModel(this: IPhrase): PhraseModel {
 		return {
 			id: this._id,
 			constraint: this.constraint,

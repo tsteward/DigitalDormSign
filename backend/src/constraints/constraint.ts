@@ -23,7 +23,7 @@ export interface IConstrainable {
 	constraint: IConstraint | null | undefined;
 }
 
-// Add Constraint as a schema type. This is necessarily messy. A custom schema used so that when the records are
+// Add ConstraintModel as a schema type. This is necessarily messy. A custom schema used so that when the records are
 // returned by mongoose they are not just plain value objects but are full classes with all of the functions associated
 // with them.
 
