@@ -1,6 +1,6 @@
 import io, {Socket} from 'socket.io';
 import mongoose from 'mongoose';
-import {TitleActivity} from "./activities/TitleActivity";
+import {Title_activity} from "./activities/title_activity";
 
 const socket = io();
 
@@ -13,7 +13,7 @@ socket.on('connection', (con: Socket) => {
 });
 
 // Create activities
-new TitleActivity(socket.of('/title'));
+new Title_activity(socket.of('/title'));
 
 console.log("Starting Socket Connection");
 socket.listen(8080);

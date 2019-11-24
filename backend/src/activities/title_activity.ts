@@ -2,7 +2,7 @@ import {Namespace, Socket} from "socket.io";
 import Title from '../models/title';
 import {ConstrainableSelector} from "../constraints/constrainable_selector";
 
-export class TitleActivity {
+export class Title_activity {
 	private selector: ConstrainableSelector;
 
 	constructor(private socket: Namespace) {
