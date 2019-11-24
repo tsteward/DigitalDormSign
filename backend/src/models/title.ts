@@ -1,16 +1,32 @@
 import * as mongoose from "mongoose";
 import {Schema, Document, SchemaTypes} from "mongoose";
 import {Constraint, IConstrainable, IConstraint} from "../constraints/constraint";
+import {TitleModel} from "../api/models/title-model";
 
 export interface ITitle extends Document, IConstrainable {
-	text: String;
+	text: string;
 	constraint: IConstraint;
+
+	toApiModel(): TitleModel;
 }
 
-const TitleSchema: Schema = new Schema({
-	text: {type: String, required: true},
-	// @ts-ignore
-	constraint: {type: Constraint, required: false}
-});
+export class TitleSchema extends Schema {
+	constructor() {
+		super({
+			text: {type: String, required: true},
+			constraint: {type: Constraint, required: false}
+		});
 
-export default mongoose.model<ITitle>('Title', TitleSchema);
+		this.methods.toApiModel = this.toApiModel;
+	}
+
+	toApiModel(this: ITitle): TitleModel {
+		return {
+			id: this._id,
+			constraint: this.constraint,
+			text: this.text
+		};
+	}
+}
+
+export default mongoose.model<ITitle>('Title', new TitleSchema());
