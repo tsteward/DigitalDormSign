@@ -17,5 +17,5 @@ export interface IConstraint {
  * different titles are displayed at certain times of the day
  */
 export interface IConstrainable {
-	constraint: IConstraint;
+	constraint: IConstraint | null | undefined;
 }
