@@ -5,3 +5,5 @@ const socket = io();
 socket.on('test', (con: Socket) => {
 	con.emit('test', 'testing123');
 });
+
+io.listen(8080);
