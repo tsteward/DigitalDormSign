@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import io from 'socket.io-client';
-import {ITitle} from '../../../../backend/src/models/title';
+import {TitleModel} from '../../../../backend/src/api/models/title-model';
 import {Phrase} from "./phrase";
 import './title.scss';
 
@@ -29,7 +29,8 @@ export class Title extends Component<TitleProps, TitleState> {
 	componentDidMount(): void {
 		const titleSocket = io('http://localhost:8080/title');
 
-		titleSocket.on('update', (newTitle: ITitle) => {
+		titleSocket.on('update', (newTitle: TitleModel) => {
+			console.log(newTitle);
 			this.setState({
 				title: newTitle.text
 			});

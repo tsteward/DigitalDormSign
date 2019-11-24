@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import io from "socket.io-client";
-import {IPhrase} from '../../../../backend/src/models/phrase';
+import {PhraseModel} from '../../../../backend/src/api/models/phrase-model';
 import './phrase.scss';
 
 interface PhraseProps {
@@ -25,7 +25,7 @@ export class Phrase extends Component<PhraseProps, PhraseState> {
 	componentDidMount(): void {
 		const phraseSocket = io('http://localhost:8080/phrase');
 
-		phraseSocket.on('update', (newPhrase: IPhrase) => {
+		phraseSocket.on('update', (newPhrase: PhraseModel) => {
 			this.setState({
 				curPhrase: newPhrase.text
 			});
