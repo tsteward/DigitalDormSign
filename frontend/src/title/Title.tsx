@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import io from 'socket.io-client';
 import {ITitle} from '../../../backend/src/models/title';
+import {Phrase} from "./phrase";
 
-export interface TitleProps {
+interface TitleProps {
 
 }
 
-export interface TitleState {
+interface TitleState {
 	title: String;
 }
 
@@ -17,7 +18,10 @@ export class Title extends Component<TitleProps, TitleState> {
 
 	render() {
 		return (
-			<h1>{this.state.title}</h1>
+			<div className="title-container">
+				<h1>{this.state.title}</h1>
+				<Phrase/>
+			</div>
 		);
 	}
 
