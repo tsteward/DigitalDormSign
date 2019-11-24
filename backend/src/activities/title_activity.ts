@@ -14,23 +14,33 @@ export class TitleActivity {
 	private initOnConnect() {
 		this.socket.on('connection', client => {
 			this.initOnUpdate(client);
-			this.updateTitle(client);
+			this.sendUpdate(client);
 		});
 	}
 
 	private initOnUpdate(client: Socket): void {
-		client.on('update', (client: Socket) => {
-			this.updateTitle(client);
-		});
+		client.on('update', this.sendUpdate);
 	}
 
-	private updateTitle(client: Socket) {
+	private initOnList(client: Socket): void {
+		client.on('list', this.sendList);
+	}
+
+	private sendUpdate(client: Socket) {
 		// Return the first title
 		Title.find((err, res) => {
 			const newTitle = this.selector.pick(res) as ITitle;
 
 			if (newTitle) {
 				client.emit('update', newTitle.toApiModel());
+			}
+		});
+	}
+
+	private sendList(client: Socket) {
+		Title.find((err, res) => {
+			if (res) {
+				client.emit('list', res.map(title => title.toApiModel()));
 			}
 		});
 	}
