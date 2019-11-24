@@ -12,12 +12,14 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@types/mongoose": "^5.5.32",
 		"@types/socket.io": "^2.1.4",
 		"concurrently": "^5.0.0",
 		"nodemon": "^2.0.1",
 		"typescript": "^3.7.2"
 	},
 	"dependencies": {
+		"mongoose": "^5.7.12",
 		"socket.io": "^2.3.0"
 	}
 }
