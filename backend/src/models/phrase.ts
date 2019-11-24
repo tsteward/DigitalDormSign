@@ -3,7 +3,7 @@ import {Schema, Document} from "mongoose";
 import {Constraint, IConstrainable, IConstraint} from "../constraints/constraint";
 
 export interface IPhrase extends Document, IConstrainable {
-	text: String;
+	text: string;
 	constraint: IConstraint;
 }
 

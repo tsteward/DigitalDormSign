@@ -23,7 +23,7 @@ export class PhraseActivity {
 	}
 
 	private updatePhrase(client: Socket) {
-		// Return the first title
+		// Return the first phrase
 		Phrase.find((err, res) => {
 			const newPhrase = this.selector.pick(res);
 
