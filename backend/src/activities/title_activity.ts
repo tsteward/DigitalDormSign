@@ -14,16 +14,16 @@ export class TitleActivity {
 	private initOnConnect() {
 		this.socket.on('connection', client => {
 			this.initOnUpdate(client);
-			this.sendUpdate(client);
+			this.initOnList(client);
 		});
 	}
 
 	private initOnUpdate(client: Socket): void {
-		client.on('update', this.sendUpdate);
+		client.on('update', () => this.sendUpdate(client));
 	}
 
 	private initOnList(client: Socket): void {
-		client.on('list', this.sendList);
+		client.on('list', () => this.sendList(client));
 	}
 
 	private sendUpdate(client: Socket) {
