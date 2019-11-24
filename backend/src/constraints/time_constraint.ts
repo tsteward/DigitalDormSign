@@ -17,11 +17,19 @@ export class TimeConstraint implements IConstraint {
 	}
 }
 
+export enum TimeConstraintRuleType {
+	BeforeHour,
+	AfterHour
+}
+
 export interface ITimeConstraintRule {
+	readonly type: TimeConstraintRuleType;
 	checkRule(time: Date): boolean;
 }
 
 export class BeforeHourRule implements ITimeConstraintRule {
+	readonly type: TimeConstraintRuleType = TimeConstraintRuleType.BeforeHour;
+
 	constructor(private hour: number, private inclusive = false) { }
 
 	checkRule(time: Date): boolean {
@@ -34,6 +42,8 @@ export class BeforeHourRule implements ITimeConstraintRule {
 }
 
 export class AfterHourRule implements ITimeConstraintRule {
+	readonly type: TimeConstraintRuleType = TimeConstraintRuleType.AfterHour;
+
 	constructor(private hour: number, private inclusive = false) { }
 
 	checkRule(time: Date): boolean {
