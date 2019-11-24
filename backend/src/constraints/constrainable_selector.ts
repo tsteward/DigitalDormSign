@@ -1,6 +1,6 @@
 import {IConstrainable} from "./constraint";
 
-export class Constrainable_selector {
+export class ConstrainableSelector {
 	/**
 	 * Randomly selects a single constrainable object whose constraints are currently satisfied
 	 * @param choices The choices to pick from
