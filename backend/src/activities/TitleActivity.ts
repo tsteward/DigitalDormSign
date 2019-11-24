@@ -23,7 +23,7 @@ export class TitleActivity {
 		// Return the first title
 		Title.findOne({}, (err, res) => {
 			if (res) {
-				client.emit('update', res.increment());
+				client.emit('update', res);
 			}
 		});
 	}
