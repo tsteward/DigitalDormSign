@@ -1,29 +1,36 @@
 import {Namespace, Socket} from "socket.io";
 import Title from '../models/title';
+import {ConstrainableSelector} from "../constraints/constrainable_selector";
 
 export class TitleActivity {
+	private selector: ConstrainableSelector;
+
 	constructor(private socket: Namespace) {
+		this.selector = new ConstrainableSelector();
+
 		this.initOnConnect();
 	}
 
 	private initOnConnect() {
 		this.socket.on('connection', client => {
-			TitleActivity.initOnUpdate(client);
-			TitleActivity.updateTitle(client);
+			this.initOnUpdate(client);
+			this.updateTitle(client);
 		});
 	}
 
-	private static initOnUpdate(client: Socket): void {
+	private initOnUpdate(client: Socket): void {
 		client.on('update', (client: Socket) => {
 			this.updateTitle(client);
 		});
 	}
 
-	private static updateTitle(client: Socket) {
+	private updateTitle(client: Socket) {
 		// Return the first title
-		Title.findOne({}, (err, res) => {
-			if (res) {
-				client.emit('update', res);
+		Title.find((err, res) => {
+			const newTitle = this.selector.pick(res);
+
+			if (newTitle) {
+				client.emit('update', newTitle);
 			}
 		});
 	}
