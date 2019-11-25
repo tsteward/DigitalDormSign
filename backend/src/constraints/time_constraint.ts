@@ -3,15 +3,13 @@ import {ConstraintType, IConstraint} from "./constraint";
 export class TimeConstraint implements IConstraint {
 	type: ConstraintType = ConstraintType.Time;
 
-	constructor(private rules: ITimeConstraintRule[] = []) { }
+	constructor(private rule: ITimeConstraintRule | null = null) { }
 
 	checkConstraint(): boolean {
-		if (this.rules) {
-			// Use a single date request for efficiency and consistency
-			const now: Date = new Date();
-			return this.rules.every(rule => rule.checkRule(now));
+		if (this.rule) {
+			return this.rule.checkRule(new Date());
 		} else {
-			// There are no rules, thus the constraint has been met
+			// There is no rule, thus the constraint has been met
 			return true;
 		}
 	}

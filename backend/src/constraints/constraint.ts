@@ -40,15 +40,16 @@ class ConstraintSchemaType extends SchemaType {
 		// Add for each new constraint type
 		switch (value.type) {
 			case ConstraintType.Time:
-				const rules = (value.rules) ? value.rules.map((valueRule: any) => {
-					switch (valueRule.type) {
-						case TimeConstraintRuleType.AfterHour:
-							return new AfterHourRule(valueRule.hour, valueRule.inclusive);
-						case TimeConstraintRuleType.BeforeHour:
-							return new BeforeHourRule(valueRule.hour, valueRule.inclusive);
-					}
-				}) : [];
-				return new TimeConstraint(rules);
+				if (!value.rule) {
+					return new TimeConstraint();
+				}
+
+				switch (value.rule.type) {
+					case TimeConstraintRuleType.AfterHour:
+						return new TimeConstraint(new AfterHourRule(value.rule.hour, value.rule.inclusive));
+					case TimeConstraintRuleType.BeforeHour:
+						return new TimeConstraint(new BeforeHourRule(value.rule.hour, value.rule.inclusive));
+				}
 			default:
 				return null;
 		}
