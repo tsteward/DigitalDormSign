@@ -44,6 +44,7 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 	}
 
 	constraintChange(newConstraint: ConstraintModel): void {
+		console.log('this is sent: ' + JSON.stringify(newConstraint));
 		this.setState({
 			curConstraint: newConstraint
 		});

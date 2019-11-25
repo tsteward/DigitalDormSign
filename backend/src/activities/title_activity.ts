@@ -33,6 +33,7 @@ export class TitleActivity {
 	}
 
 	private update(updatedTitle: TitleModel) {
+		console.log(updatedTitle);
 		Title.findById(updatedTitle.id, (err, res) => {
 			if (res) {
 				res.updateFromModel(updatedTitle);
@@ -53,6 +54,7 @@ export class TitleActivity {
 
 	private sendList(client: Socket) {
 		Title.find((err, res) => {
+			console.log(res);
 			if (res) {
 				client.emit('list', res.map(title => title.toApiModel()));
 			}

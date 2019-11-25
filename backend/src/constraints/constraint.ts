@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {AfterHourRule, BeforeHourRule, TimeConstraint, TimeConstraintRuleType} from "./time_constraint";
 
 export enum ConstraintType {
+	None = -1,
 	Time
 
 }
@@ -14,6 +15,14 @@ export enum ConstraintType {
 export interface IConstraint {
 	type: ConstraintType;
 	checkConstraint(): boolean;
+}
+
+export class NoneConstraint implements IConstraint {
+	type = ConstraintType.None;
+
+	checkConstraint(): boolean {
+		return true;
+	}
 }
 
 /**
@@ -52,7 +61,7 @@ class ConstraintSchemaType extends SchemaType {
 						return new TimeConstraint(new BeforeHourRule(value.rule.hour, value.rule.inclusive));
 				}
 			default:
-				return null;
+				return new NoneConstraint();
 		}
 	}
 }

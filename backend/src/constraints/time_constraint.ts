@@ -16,6 +16,7 @@ export class TimeConstraint implements IConstraint {
 }
 
 export enum TimeConstraintRuleType {
+	None = -1,
 	BeforeHour,
 	AfterHour
 }
