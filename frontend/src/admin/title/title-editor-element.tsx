@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {TitleModel} from "../../../../backend/src/api/models/title-model";
 import {debounce} from "debounce";
 import {ConstraintEditor} from "../constraint/constraint-editor";
+import { ConstraintModel } from "../../../../backend/src/api/models/constraint-model";
 
 export interface TitleEditorElementProps {
 	initial: TitleModel;
@@ -10,6 +11,7 @@ export interface TitleEditorElementProps {
 
 interface TitleEditorElementState {
 	curText: string;
+	curConstraint: ConstraintModel;
 }
 
 export class TitleEditorElement extends Component<TitleEditorElementProps, TitleEditorElementState> {
@@ -17,7 +19,8 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 		super(props);
 
 		this.state = {
-			curText: this.props.initial.text
+			curText: this.props.initial.text,
+			curConstraint: this.props.initial.constraint
 		};
 	}
 
@@ -25,7 +28,9 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 		return (
 			<div>
 				<input type="text" onChange={(e) => this.textChange(e)} value={this.state.curText}/>
-				<ConstraintEditor initialConstraint={this.props.initial.constraint} onUpdate={() => {console.log("hot damn")}}/>
+				<ConstraintEditor
+					constraint={this.state.curConstraint}
+					onUpdate={(newConstraint) => this.constraintChange(newConstraint)}/>
 			</div>
 		);
 	}
@@ -38,10 +43,18 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 		this.sendUpdate();
 	}
 
+	constraintChange(newConstraint: ConstraintModel): void {
+		this.setState({
+			curConstraint: newConstraint
+		});
+
+		this.sendUpdate();
+	}
+
 	sendUpdate: Function = debounce(() => {
 		const update: TitleModel = {
 			id: this.props.initial.id,
-			constraint: this.props.initial.constraint,
+			constraint: this.state.curConstraint,
 			text: this.state.curText
 		};
 

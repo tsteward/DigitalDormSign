@@ -1,31 +1,16 @@
 import * as models from '../../../../backend/src/api/models/constraint-model'
-import {ConstraintUpdatedCallback} from "./constraint-editor";
 import React, {Component, ReactElement} from "react";
 import _ from 'lodash';
 import {TimeConstraintHourEditor} from "./time-constraint-hour-editor";
 
-export type TimeConstraintUpdateCallback = (newConstraint: models.TimeConstraintRuleModel) => void;
-
 export interface TimeConstraintEditorProps {
-	initialConstraint: models.TimeConstraintModel;
-	onUpdate: ConstraintUpdatedCallback;
+	constraint: models.TimeConstraintModel;
+	onUpdate: (newConstraint: models.TimeConstraintModel) => void;
 }
 
-export interface TimeConstraintEditorState {
-	curConstraint: models.TimeConstraintModel;
-}
-
-export class TimeConstraintEditor extends Component<TimeConstraintEditorProps, TimeConstraintEditorState> {
-	constructor(props: TimeConstraintEditorProps) {
-		super(props);
-
-		this.state = {
-			curConstraint: _.cloneDeep(props.initialConstraint)
-		};
-	}
-
+export class TimeConstraintEditor extends Component<TimeConstraintEditorProps> {
 	render() {
-		const selected = (this.state.curConstraint.rule) ? this.state.curConstraint.rule.type : -1;
+		const selected = (this.props.constraint.rule) ? this.props.constraint.rule.type : -1;
 
 		let editor: ReactElement | null;
 		switch (selected) {
@@ -33,7 +18,7 @@ export class TimeConstraintEditor extends Component<TimeConstraintEditorProps, T
 			case models.TimeConstraintRuleType.BeforeHour:
 				editor = (
 					<TimeConstraintHourEditor
-						rule={this.state.curConstraint.rule as unknown as models.AfterHourTimeConstraintModel}
+						rule={this.props.constraint.rule as unknown as models.AfterHourTimeConstraintModel}
 						onUpdate={(newRule) => this.onRuleChange(newRule as unknown as models.TimeConstraintRuleModel)}/>);
 					break;
 			default:
@@ -53,7 +38,7 @@ export class TimeConstraintEditor extends Component<TimeConstraintEditorProps, T
 	}
 
 	onTypeChange(e: any) {
-		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.state.curConstraint);
+		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.props.constraint);
 
 		switch (parseInt(e.target.value)) {
 			case models.TimeConstraintRuleType.AfterHour: {
@@ -78,17 +63,12 @@ export class TimeConstraintEditor extends Component<TimeConstraintEditorProps, T
 				newConstraint.rule = null;
 		}
 
-		this.setState({
-			curConstraint: newConstraint
-		});
+		this.props.onUpdate(newConstraint);
 	}
 
 	onRuleChange(newRule: models.TimeConstraintRuleModel) {
-		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.state.curConstraint);
+		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.props.constraint);
 		newConstraint.rule = newRule;
-
-		this.setState({
-			curConstraint: newConstraint
-		});
+		this.props.onUpdate(newConstraint);
 	}
 }

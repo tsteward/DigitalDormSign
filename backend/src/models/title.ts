@@ -38,6 +38,8 @@ export class TitleSchema extends Schema {
 			text: updatedTitle.text
 		});
 
+		this.markModified('constraint');
+		this.markModified('text');
 		this.save();
 	}
 }

@@ -12,7 +12,7 @@ export interface TimeConstraintRuleModel {
 	type: TimeConstraintRuleType
 }
 
-export interface TimeConstraintModel {
+export interface TimeConstraintModel extends ConstraintModel{
 	rule: TimeConstraintRuleModel | undefined | null;
 }
 

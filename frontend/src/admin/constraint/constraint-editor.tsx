@@ -5,18 +5,18 @@ import {TimeConstraintEditor} from "./time-constraint-editor";
 export type ConstraintUpdatedCallback = (newConstraint: ConstraintModel) => void;
 
 export interface ConstraintEditorProps {
-	initialConstraint: ConstraintModel;
+	constraint: ConstraintModel;
 	onUpdate: ConstraintUpdatedCallback;
 }
 
 export class ConstraintEditor extends Component<ConstraintEditorProps> {
 	render() {
-		switch (this.props.initialConstraint.type) {
+		switch (this.props.constraint.type) {
 			case ConstraintType.Time:
 				return (
 					<TimeConstraintEditor
-						initialConstraint={this.props.initialConstraint as unknown as TimeConstraintModel}
-						onUpdate={() => console.log("testing")}/>
+						constraint={this.props.constraint as unknown as TimeConstraintModel}
+						onUpdate={this.props.onUpdate}/>
 				);
 			default:
 				return null;
