@@ -16,7 +16,7 @@ export interface TimeConstraintModel {
 	rule: TimeConstraintRuleModel | undefined | null;
 }
 
-export interface BeforeHourTimeConstraintModel {
+export interface BeforeHourTimeConstraintModel extends TimeConstraintRuleModel {
 	hour: number;
 	inclusive: boolean;
 }
