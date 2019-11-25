@@ -9,6 +9,8 @@ export class ConstrainableSelector {
 		if (choices) {
 			const validChoices = choices.filter(choice => {
 				if (choice.constraint) {
+					console.log(choice);
+					console.log('constraint: ' + choice.constraint.checkConstraint());
 					return choice.constraint.checkConstraint();
 				} else {
 					return true;

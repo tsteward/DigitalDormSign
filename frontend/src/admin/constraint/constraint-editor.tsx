@@ -12,7 +12,6 @@ export interface ConstraintEditorProps {
 
 export class ConstraintEditor extends Component<ConstraintEditorProps> {
 	render() {
-		console.log(this.props.constraint);
 		let editor: ReactElement | null;
 		switch (this.props.constraint.type) {
 			case ConstraintType.Time:

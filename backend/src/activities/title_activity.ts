@@ -17,6 +17,7 @@ export class TitleActivity {
 			this.initOnRefresh(client);
 			this.initOnUpdate(client);
 			this.initOnList(client);
+			this.initOnAdd(client);
 		});
 	}
 
@@ -32,13 +33,25 @@ export class TitleActivity {
 		client.on('update', this.update)
 	}
 
+	private initOnAdd(client: Socket): void {
+		client.on('add', (newTitle: TitleModel) => this.add(client, newTitle))
+	}
+
 	private update(updatedTitle: TitleModel) {
-		console.log(updatedTitle);
 		Title.findById(updatedTitle.id, (err, res) => {
 			if (res) {
 				res.updateFromModel(updatedTitle);
 			}
 		});
+	}
+
+	private add(client: Socket, newTitleData: TitleModel) {
+		const newTitle: ITitle = new Title({
+			text: newTitleData.text,
+			constraint: newTitleData.constraint
+		});
+
+		newTitle.save().then(() => this.sendList(client));
 	}
 
 	private sendRefresh(client: Socket) {
@@ -54,7 +67,6 @@ export class TitleActivity {
 
 	private sendList(client: Socket) {
 		Title.find((err, res) => {
-			console.log(res);
 			if (res) {
 				client.emit('list', res.map(title => title.toApiModel()));
 			}

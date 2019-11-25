@@ -9,13 +9,13 @@ export interface ITitle extends Document, IConstrainable {
 	constraint: IConstraint;
 
 	toApiModel(): TitleModel;
-	updateFromModel(updatedTitle: TitleModel): void;
+	updateFromModel(updatedTitle: TitleModel): Promise<ITitle>;
 }
 
 export class TitleSchema extends Schema {
 	constructor() {
 		super({
-			text: {type: String, required: true},
+			text: {type: String, required: false},
 			constraint: {type: Constraint, required: false}
 		});
 
@@ -31,7 +31,7 @@ export class TitleSchema extends Schema {
 		};
 	}
 
-	updateFromModel(this: ITitle, updatedTitle: TitleModel) {
+	updateFromModel(this: ITitle, updatedTitle: TitleModel): Promise<ITitle> {
 		// Don't merge the id in, it should never be modified
 		_.merge(this, {
 			constraint: updatedTitle.constraint,
@@ -40,7 +40,7 @@ export class TitleSchema extends Schema {
 
 		this.markModified('constraint');
 		this.markModified('text');
-		this.save();
+		return this.save();
 	}
 }
 

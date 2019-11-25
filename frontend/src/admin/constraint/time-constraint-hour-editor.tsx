@@ -18,7 +18,7 @@ export class TimeConstraintHourEditor extends Component<TimeConstraintHourEditor
 	}
 
 	onHourChange(e: any): void {
-		let newObj: EditableObject = Object.assign(this.props.rule, {hour: e.target.value});
+		let newObj: EditableObject = Object.assign(this.props.rule, {hour: parseInt(e.target.value)});
 		this.props.onUpdate(newObj);
 	}
 

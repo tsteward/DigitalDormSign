@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import io from "socket.io-client";
 import {TitleModel} from "../../../../backend/src/api/models/title-model";
 import {TitleEditorElement} from "./title-editor-element";
+import {ConstraintType} from "../../../../backend/src/constraints/constraint";
 
 export interface TitleEditorListState {
 	titles: TitleModel[];
@@ -27,9 +28,21 @@ export class TitleEditorList extends Component<TitleEditorListProps, TitleEditor
 							<TitleEditorElement initial={title} socket={this.socket}/>
 						</div>
 					)
-				)}
+				)},
+				<input type="button" value="Add" onClick={() => this.onAddClicked()}/>
 			</div>
 		);
+	}
+
+	onAddClicked(): void {
+		const newTitle: TitleModel = {
+			id: 'placeholder',
+			constraint: {
+				type: ConstraintType.None
+			},
+			text: ''
+		};
+		this.socket.emit('add', newTitle);
 	}
 
 	componentDidMount(): void {

@@ -36,7 +36,7 @@ export class BeforeHourRule implements ITimeConstraintRule {
 			return true;
 		}
 
-		return time.getHours() > this.hour;
+		return time.getHours() < this.hour;
 	}
 }
 
@@ -50,6 +50,7 @@ export class AfterHourRule implements ITimeConstraintRule {
 			return true;
 		}
 
-		return time.getHours() < this.hour;
+		console.log('hours: ' + time.getHours() + ' ' + this.hour);
+		return time.getHours() > this.hour;
 	}
 }
