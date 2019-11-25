@@ -1,6 +1,7 @@
 import {Namespace, Socket} from "socket.io";
 import Title, {ITitle} from '../models/title';
 import {ConstrainableSelector} from "../constraints/constrainable_selector";
+import {TitleModel} from "../api/models/title-model";
 
 export class TitleActivity {
 	private selector: ConstrainableSelector;
@@ -13,26 +14,39 @@ export class TitleActivity {
 
 	private initOnConnect() {
 		this.socket.on('connection', client => {
+			this.initOnRefresh(client);
 			this.initOnUpdate(client);
 			this.initOnList(client);
 		});
 	}
 
-	private initOnUpdate(client: Socket): void {
-		client.on('update', () => this.sendUpdate(client));
+	private initOnRefresh(client: Socket): void {
+		client.on('refresh', () => this.sendRefresh(client));
 	}
 
 	private initOnList(client: Socket): void {
 		client.on('list', () => this.sendList(client));
 	}
 
-	private sendUpdate(client: Socket) {
+	private initOnUpdate(client: Socket): void {
+		client.on('update', this.update)
+	}
+
+	private update(updatedTitle: TitleModel) {
+		Title.findById(updatedTitle.id, (err, res) => {
+			if (res) {
+				res.updateFromModel(updatedTitle);
+			}
+		});
+	}
+
+	private sendRefresh(client: Socket) {
 		// Return the first title
 		Title.find((err, res) => {
 			const newTitle = this.selector.pick(res) as ITitle;
 
 			if (newTitle) {
-				client.emit('update', newTitle.toApiModel());
+				client.emit('refresh', newTitle.toApiModel());
 			}
 		});
 	}

@@ -35,6 +35,12 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 	}
 
 	sendUpdate: Function = debounce(() => {
-		console.log('send update');
+		const update: TitleModel = {
+			id: this.props.initial.id,
+			constraint: this.props.initial.constraint,
+			text: this.state.curText
+		};
+
+		this.props.socket.emit('update', update);
 	}, 500);
 }

@@ -29,7 +29,7 @@ export class Title extends Component<TitleProps, TitleState> {
 	componentDidMount(): void {
 		const titleSocket = io('http://localhost:8080/title');
 
-		titleSocket.on('update', (newTitle: TitleModel) => {
+		titleSocket.on('refresh', (newTitle: TitleModel) => {
 			console.log(newTitle);
 			this.setState({
 				title: newTitle.text
