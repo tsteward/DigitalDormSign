@@ -21,7 +21,13 @@ export class TitleEditorList extends Component<TitleEditorListProps, TitleEditor
 	render() {
 		return (
 			<div>
-				{this.state.titles.map(title => <TitleEditorElement key={title.id} initial={title} socket={this.socket}/>)}
+				{
+					this.state.titles.map(title => (
+						<div>
+							<TitleEditorElement key={title.id} initial={title} socket={this.socket}/>
+						</div>
+					)
+				)}
 			</div>
 		);
 	}

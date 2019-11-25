@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {TitleModel} from "../../../../backend/src/api/models/title-model";
 import {debounce} from "debounce";
+import {ConstraintEditor} from "../constraint/constraint-editor";
 
 export interface TitleEditorElementProps {
 	initial: TitleModel;
@@ -22,7 +23,10 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 
 	render() {
 		return (
-			<input type="text" onChange={(e) => this.textChange(e)} value={this.state.curText}/>
+			<div>
+				<input type="text" onChange={(e) => this.textChange(e)} value={this.state.curText}/>
+				<ConstraintEditor initialConstraint={this.props.initial.constraint} onUpdate={() => {console.log("hot damn")}}/>
+			</div>
 		);
 	}
 

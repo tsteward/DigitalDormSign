@@ -4,6 +4,7 @@ import {AfterHourRule, BeforeHourRule, TimeConstraint, TimeConstraintRuleType} f
 
 export enum ConstraintType {
 	Time
+
 }
 
 /**

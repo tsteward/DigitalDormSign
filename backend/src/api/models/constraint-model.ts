@@ -2,7 +2,7 @@ import {ConstraintType} from "../../constraints/constraint";
 import {TimeConstraintRuleType} from "../../constraints/time_constraint";
 
 // Re-export these enums so that the frontend is not importing from outside the api directory
-export {ConstraintType, TimeConstraintRuleType};
+export {ConstraintType as ConstraintType, TimeConstraintRuleType as TimeConstraintRuleType};
 
 export interface ConstraintModel {
 	type: ConstraintType;
@@ -13,7 +13,7 @@ export interface TimeConstraintRuleModel {
 }
 
 export interface TimeConstraintModel {
-	rules: TimeConstraintRuleModel[] | undefined | null;
+	rule: TimeConstraintRuleModel | undefined | null;
 }
 
 export interface BeforeHourTimeConstraintModel {
