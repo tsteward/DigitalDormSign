@@ -14,27 +14,11 @@ export class TitleActivity {
 
 	private initOnConnect() {
 		this.socket.on('connection', client => {
-			this.initOnRefresh(client);
-			this.initOnUpdate(client);
-			this.initOnList(client);
-			this.initOnAdd(client);
+			client.on('refresh', () => this.sendRefresh(client));
+			client.on('list', () => this.sendList(client));
+			client.on('update', this.update);
+			client.on('add', (newTitle: TitleModel) => this.add(client, newTitle));
 		});
-	}
-
-	private initOnRefresh(client: Socket): void {
-		client.on('refresh', () => this.sendRefresh(client));
-	}
-
-	private initOnList(client: Socket): void {
-		client.on('list', () => this.sendList(client));
-	}
-
-	private initOnUpdate(client: Socket): void {
-		client.on('update', this.update)
-	}
-
-	private initOnAdd(client: Socket): void {
-		client.on('add', (newTitle: TitleModel) => this.add(client, newTitle))
 	}
 
 	private update(updatedTitle: TitleModel) {
@@ -55,7 +39,6 @@ export class TitleActivity {
 	}
 
 	private sendRefresh(client: Socket) {
-		// Return the first title
 		Title.find((err, res) => {
 			const newTitle = this.selector.pick(res) as ITitle;
 

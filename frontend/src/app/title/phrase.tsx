@@ -24,8 +24,9 @@ export class Phrase extends Component<PhraseProps, PhraseState> {
 
 	componentDidMount(): void {
 		const phraseSocket = io('http://localhost:8080/phrase');
+		phraseSocket.emit('refresh');
 
-		phraseSocket.on('update', (newPhrase: PhraseModel) => {
+		phraseSocket.on('refresh', (newPhrase: PhraseModel) => {
 			this.setState({
 				curPhrase: newPhrase.text
 			});
