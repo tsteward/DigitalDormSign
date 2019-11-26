@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Title} from "./title/title";
 import './app.scss';
+import {PollActivity} from "./activities/poll/poll-activity";
 
 export class App extends Component {
 	render() {
@@ -10,6 +11,7 @@ export class App extends Component {
 					<Title/>
 				</div>
 				<div className="activity">
+					<PollActivity/>
 				</div>
 			</div>
 		);

@@ -102,8 +102,8 @@ export class PollEditorElement extends Component<PollEditorElementProps, PollEdi
 			id: this.props.initial.id,
 			question: this.state.curQuestion,
 			answers: this.state.curAnswers,
-			answerCounts: this.props.initial.answerCounts,
-			totalAnswers: this.props.initial.totalAnswers,
+			answerCounts: new Array(this.state.curAnswers.length).fill(0),
+			totalAnswers: 0,
 			constraint: this.state.curConstraint,
 		};
 
