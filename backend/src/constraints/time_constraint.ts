@@ -59,7 +59,7 @@ function compare(value: number, unit: TimeConstraintUnit, time: Date): number {
 			const start = new Date(time.getFullYear(), 0, 0);
 			const diff = (time.getTime() - start.getTime()) + ((start.getTimezoneOffset() - time.getTimezoneOffset()) * 60 * 1000);
 			const oneDay = 1000 * 60 * 60 * 24;
-			const day = Math.floor(diff / oneDay);
+			const day = Math.floor(diff / oneDay) - 1;
 			return value - day;
 		}
 		case TimeConstraintUnit.MONTH: return value - time.getMonth();
@@ -74,9 +74,9 @@ export class BeforeRule implements ITimeConstraintRule {
 
 	checkRule(time: Date): boolean {
 		if (this.inclusive) {
-			return compare(this.value, this.unit, time) <= 0;
+			return compare(this.value, this.unit, time) >= 0;
 		} else {
-			return compare(this.value, this.unit, time) < 0;
+			return compare(this.value, this.unit, time) > 0;
 		}
 	}
 }
@@ -88,9 +88,9 @@ export class AfterRule implements ITimeConstraintRule {
 
 	checkRule(time: Date): boolean {
 		if (this.inclusive) {
-			return compare(this.value, this.unit, time) >= 0;
+			return compare(this.value, this.unit, time) <= 0;
 		} else {
-			return compare(this.value, this.unit, time) > 0;
+			return compare(this.value, this.unit, time) < 0;
 		}
 	}
 }

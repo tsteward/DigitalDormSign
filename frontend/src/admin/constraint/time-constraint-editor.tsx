@@ -1,60 +1,93 @@
-import * as models from '../../../../backend/src/api/models/constraint-model'
 import React, {Component, ReactElement} from "react";
 import _ from 'lodash';
-import {TimeConstraintHourEditor} from "./time-constraint-hour-editor";
+import {TimeConstraintBeforeEditor} from "./time-constraint-before-editor";
+import {
+	AfterRuleModel,
+	BeforeRuleModel,
+	EqualRuleModel,
+	TimeConstraintModel,
+    TimeConstraintRuleModel,
+    TimeConstraintRuleType,
+    TimeConstraintUnit
+} from "../../../../backend/src/api/models/constraint-model";
+import {TimeConstraintAfterEditor} from "./time-constraint-after-editor";
+import {TimeConstraintEqualEditor} from "./time-constraint-equal-editor";
 
 export interface TimeConstraintEditorProps {
-	constraint: models.TimeConstraintModel;
-	onUpdate: (newConstraint: models.TimeConstraintModel) => void;
+	constraint: TimeConstraintModel;
+	onUpdate: (newConstraint: TimeConstraintModel) => void;
 }
 
 export class TimeConstraintEditor extends Component<TimeConstraintEditorProps> {
 	render() {
-		const selected = (this.props.constraint.rule) ? this.props.constraint.rule.type : -1;
-
-		let editor: ReactElement | null;
-		switch (selected) {
-			case models.TimeConstraintRuleType.AfterHour:
-			case models.TimeConstraintRuleType.BeforeHour:
-				editor = (
-					<TimeConstraintHourEditor
-						rule={this.props.constraint.rule as unknown as models.AfterHourTimeConstraintModel}
-						onUpdate={(newRule) => this.onRuleChange(newRule as unknown as models.TimeConstraintRuleModel)}/>);
-					break;
-			default:
-				editor = null;
-		}
-
 		return (
-			<div>
-				<select name="type" value={selected} onChange={(e) => this.onTypeChange(e)}>
+			<span>
+				<select name="type" value={this.getSelected()} onChange={(e) => this.onTypeChange(e)}>
 					<option value={-1}>None</option>
-					<option value={models.TimeConstraintRuleType.BeforeHour}>Before Hour</option>
-					<option value={models.TimeConstraintRuleType.AfterHour}>After Hour</option>
+					<option value={TimeConstraintRuleType.Before}>Before</option>
+					<option value={TimeConstraintRuleType.Equal}>Equal</option>
+					<option value={TimeConstraintRuleType.After}>After</option>
 				</select>
-				{editor}
-			</div>
+				{this.renderEditor()}
+			</span>
 		);
 	}
 
+	/**
+	 * Renders the appropriate editor for the current time constraint rule
+	 */
+	private renderEditor(): ReactElement | null {
+		switch (this.getSelected()) {
+			case TimeConstraintRuleType.After:
+				return <TimeConstraintAfterEditor
+					rule={this.props.constraint.rule as AfterRuleModel}
+					onChange={(newRule) => this.onRuleChange(newRule)}/>;
+			case TimeConstraintRuleType.Before:
+				return <TimeConstraintBeforeEditor
+					rule={this.props.constraint.rule as BeforeRuleModel}
+					onChange={(newRule) => this.onRuleChange(newRule)}/>;
+			case TimeConstraintRuleType.Equal:
+				return <TimeConstraintEqualEditor
+					rule={this.props.constraint.rule as EqualRuleModel}
+					onChange={(newRule) => this.onRuleChange(newRule)}/>;
+			default:
+				return null;
+		}
+	}
+
+	private getSelected(): TimeConstraintRuleType {
+		return (this.props.constraint.rule) ? this.props.constraint.rule.type : TimeConstraintRuleType.None;
+	}
+
 	onTypeChange(e: any) {
-		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.props.constraint);
+		let newConstraint: TimeConstraintModel = _.cloneDeep(this.props.constraint);
 
 		switch (parseInt(e.target.value)) {
-			case models.TimeConstraintRuleType.AfterHour: {
-				let newRule: models.AfterHourTimeConstraintModel = {
-					type: models.TimeConstraintRuleType.AfterHour,
-					hour: -1,
+			case TimeConstraintRuleType.After: {
+				let newRule: AfterRuleModel = {
+					type: TimeConstraintRuleType.After,
+					unit: TimeConstraintUnit.HOUR_24,
+					value: 0,
 					inclusive: false
 				};
 				newConstraint.rule = newRule;
 				break;
 			}
-			case models.TimeConstraintRuleType.BeforeHour: {
-				let newRule: models.AfterHourTimeConstraintModel = {
-					type: models.TimeConstraintRuleType.BeforeHour,
-					hour: -1,
+			case TimeConstraintRuleType.Before: {
+				let newRule: BeforeRuleModel = {
+					type: TimeConstraintRuleType.Before,
+					unit: TimeConstraintUnit.HOUR_24,
+					value: 0,
 					inclusive: false
+				};
+				newConstraint.rule = newRule;
+				break;
+			}
+			case TimeConstraintRuleType.Equal: {
+				let newRule: EqualRuleModel = {
+					type: TimeConstraintRuleType.Equal,
+					unit: TimeConstraintUnit.HOUR_24,
+					value: 0,
 				};
 				newConstraint.rule = newRule;
 				break;
@@ -66,8 +99,8 @@ export class TimeConstraintEditor extends Component<TimeConstraintEditorProps> {
 		this.props.onUpdate(newConstraint);
 	}
 
-	onRuleChange(newRule: models.TimeConstraintRuleModel) {
-		let newConstraint: models.TimeConstraintModel = _.cloneDeep(this.props.constraint);
+	onRuleChange(newRule: TimeConstraintRuleModel) {
+		let newConstraint: TimeConstraintModel = _.cloneDeep(this.props.constraint);
 		newConstraint.rule = newRule;
 		this.props.onUpdate(newConstraint);
 	}

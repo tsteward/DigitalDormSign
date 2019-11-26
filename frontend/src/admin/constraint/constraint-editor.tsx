@@ -15,11 +15,7 @@ export class ConstraintEditor extends Component<ConstraintEditorProps> {
 		let editor: ReactElement | null;
 		switch (this.props.constraint.type) {
 			case ConstraintType.Time:
-				editor = (
-					<TimeConstraintEditor
-						constraint={this.props.constraint as unknown as TimeConstraintModel}
-						onUpdate={this.props.onUpdate}/>
-				);
+				editor = this.renderTimeConstraintEditor();
 				break;
 			default:
 				editor = null;
@@ -33,6 +29,14 @@ export class ConstraintEditor extends Component<ConstraintEditorProps> {
 				</select>
 				{editor}
 			</div>
+		);
+	}
+
+	private renderTimeConstraintEditor(): ReactElement {
+		return (
+			<TimeConstraintEditor
+				constraint={this.props.constraint as unknown as TimeConstraintModel}
+				onUpdate={this.props.onUpdate}/>
 		);
 	}
 
