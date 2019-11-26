@@ -1,6 +1,6 @@
-import {SchemaType} from "mongoose";
 import * as mongoose from "mongoose";
-import {AfterHourRule, BeforeHourRule, TimeConstraint, TimeConstraintRuleType} from "./time_constraint";
+import {SchemaType} from "mongoose";
+import {AfterRule, BeforeRule, EqualRule, TimeConstraint, TimeConstraintRuleType} from "./time_constraint";
 
 export enum ConstraintType {
 	None = -1,
@@ -55,10 +55,14 @@ class ConstraintSchemaType extends SchemaType {
 				}
 
 				switch (value.rule.type) {
-					case TimeConstraintRuleType.AfterHour:
-						return new TimeConstraint(new AfterHourRule(value.rule.hour, value.rule.inclusive));
-					case TimeConstraintRuleType.BeforeHour:
-						return new TimeConstraint(new BeforeHourRule(value.rule.hour, value.rule.inclusive));
+					case TimeConstraintRuleType.After:
+						return new TimeConstraint(new AfterRule(value.rule.unit, value.rule.value, value.rule.inclusive));
+					case TimeConstraintRuleType.Before:
+						return new TimeConstraint(new BeforeRule(value.rule.unit, value.rule.value, value.rule.inclusive));
+					case TimeConstraintRuleType.Equal:
+						return new TimeConstraint(new EqualRule(value.rule.unit, value.rule.value));
+					default:
+						return new NoneConstraint();
 				}
 			default:
 				return new NoneConstraint();
