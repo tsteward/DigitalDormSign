@@ -47,15 +47,13 @@ export class PhraseEditorList extends Component<PhraseEditorListProps, PhraseEdi
 
 	componentDidMount(): void {
 		this.socket = io('http://localhost:8080/phrase');
-
-		this.socket.on('connect', () => {
-			this.socket.emit('list')
-		});
 		this.socket.on('list', (phrases: PhraseModel[]) => {
 			this.setState({
 				phrases: phrases
 			});
 		});
+
+		this.socket.emit('list');
 	}
 
 	componentWillUnmount(): void {

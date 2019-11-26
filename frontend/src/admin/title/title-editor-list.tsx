@@ -47,15 +47,13 @@ export class TitleEditorList extends Component<TitleEditorListProps, TitleEditor
 
 	componentDidMount(): void {
 		this.socket = io('http://localhost:8080/title');
-
-		this.socket.on('connect', () => {
-			this.socket.emit('list')
-		});
 		this.socket.on('list', (titles: TitleModel[]) => {
 			this.setState({
 				titles: titles
 			});
 		});
+
+		this.socket.emit('list');
 	}
 
 	componentWillUnmount(): void {

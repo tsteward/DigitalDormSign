@@ -44,11 +44,12 @@ export class PollSchema extends Schema {
 		// Don't merge the id in, it should never be modified
 		_.merge(this, {
 			question: updatedPoll.question,
-			answers: updatedPoll.answers,
-			answerCounts: updatedPoll.answerCounts,
 			totalAnswers: updatedPoll.totalAnswers,
 			constraint: updatedPoll.constraint
 		});
+
+		this.answers = updatedPoll.answers;
+		this.answerCounts = updatedPoll.answerCounts;
 
 		this.markModified('question');
 		this.markModified('answers');

@@ -16,15 +16,10 @@ export class PollActivity {
 	private initOnConnect(): void {
 		this.socket.on('connection', client => {
 			client.on('refresh', () => this.sendPoll(client));
-		});
-	}
-
-	private sendPoll(client: Socket): void {
-		Poll.find((err, res) => {
-			const toSend = this.selector.pick(res);
-			if (toSend) {
-				client.emit('new', (toSend as IPoll).toApiModel());
-			}
+			client.on('add', (newPoll: PollModel) => this.add(client, newPoll));
+			client.on('list', () => this.sendList(client));
+			client.on('delete', (id: string) => this.delete(client, id));
+			client.on('update', (updatedPoll: PollModel) => this.update(updatedPoll));
 		});
 	}
 
@@ -42,6 +37,23 @@ export class PollActivity {
 
 	private delete(client: Socket, id: string) {
 		Poll.findByIdAndDelete(id).then(() => this.sendList(client));
+	}
+
+	private update(updatedPoll: PollModel) {
+		Poll.findById(updatedPoll.id, (err, res) => {
+			if (res) {
+				res.updateFromModel(updatedPoll);
+			}
+		});
+	}
+
+	private sendPoll(client: Socket): void {
+		Poll.find((err, res) => {
+			const toSend = this.selector.pick(res);
+			if (toSend) {
+				client.emit('new', (toSend as IPoll).toApiModel());
+			}
+		});
 	}
 
 	private sendList(client: Socket) {

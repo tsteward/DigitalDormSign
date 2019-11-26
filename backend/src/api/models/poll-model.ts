@@ -1,4 +1,4 @@
-import {IConstraint} from "../../constraints/constraint";
+import {ConstraintModel} from "./constraint-model";
 
 export interface PollModel {
 	id: string;
@@ -6,5 +6,5 @@ export interface PollModel {
 	answers: string[];
 	answerCounts: number[];
 	totalAnswers: number;
-	constraint: IConstraint;
+	constraint: ConstraintModel;
 }
