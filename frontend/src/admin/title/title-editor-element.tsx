@@ -28,6 +28,7 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 		return (
 			<div>
 				<input type="text" onChange={(e) => this.textChange(e)} value={this.state.curText}/>
+				<input type="button" value={"Delete"} onClick={() => this.onDelete()}/>
 				<ConstraintEditor
 					constraint={this.state.curConstraint}
 					onUpdate={(newConstraint) => this.constraintChange(newConstraint)}/>
@@ -41,6 +42,10 @@ export class TitleEditorElement extends Component<TitleEditorElementProps, Title
 		});
 
 		this.sendUpdate();
+	}
+
+	onDelete(): void {
+		this.props.socket.emit('delete', this.props.initial.id);
 	}
 
 	constraintChange(newConstraint: ConstraintModel): void {

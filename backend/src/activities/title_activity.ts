@@ -18,6 +18,7 @@ export class TitleActivity {
 			client.on('list', () => this.sendList(client));
 			client.on('update', this.update);
 			client.on('add', (newTitle: TitleModel) => this.add(client, newTitle));
+			client.on('delete', (id: string) => this.delete(client, id));
 		});
 	}
 
@@ -36,6 +37,10 @@ export class TitleActivity {
 		});
 
 		newTitle.save().then(() => this.sendList(client));
+	}
+
+	private delete(client: Socket, id: string) {
+		Title.findByIdAndDelete(id).then(() => this.sendList(client));
 	}
 
 	private sendRefresh(client: Socket) {

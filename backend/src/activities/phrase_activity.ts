@@ -18,6 +18,7 @@ export class PhraseActivity {
 			client.on('list', () => this.sendList(client));
 			client.on('update', this.update);
 			client.on('add', (newPhrase: PhraseModel) => this.add(client, newPhrase));
+			client.on('delete', (id: string) => this.delete(client, id));
 		});
 	}
 
@@ -36,6 +37,10 @@ export class PhraseActivity {
 		});
 		console.log(newPhraseData);
 		newPhrase.save().then(() => this.sendList(client)).catch(reason => console.log(console.log('test ' + reason)));
+	}
+
+	private delete(client: Socket, id: string) {
+		Phrase.findByIdAndDelete(id).then(() => this.sendList(client));
 	}
 
 	private sendRefresh(client: Socket) {
